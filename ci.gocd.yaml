@@ -1,60 +1,57 @@
-#ci.gocd.yaml
-format_version: 9
-environments:
-  testing:
-    environment_variables:
-      DEPLOYMENT: testing
-    secure_variables:
-      ENV_PASSWORD: "s&Du#@$xsSa"
-    pipelines:
-      - example-deploy-testing
-      - build-testing
+format_version: 3
 pipelines:
-  mypipe1: # definition of mypipe1 pipeline
-    group: MyFirstPipelineGroup # note that the group name can contain only of alphanumeric & underscore characters
-    display_order: 10
-    label_template: "${mygit[:8]}"
+  Assignmment_Pipeline:
+    group: MyFirstPipelineGroup
+    label_template: ${COUNT}
     lock_behavior: none
-    parameters: # list of parameters that can be configured for a pipeline
-      param1: value1
+    display_order: -1
     materials:
-      mygit: # this is the name of material, the name can contain only of alphanumeric & underscore characters
-        # keyword git says about type of material and url at once
-        git: http://my.example.org/mygit.git
-        branch: ci
-      myupstream: # this name does not matter, but there should be no 2 materials with the same name
-        # type is optional here, material type is implied based on presence of pipeline and stage fields
-        # type: dependency
-        pipeline: pipe2
-        stage: test
-    stages: # list of stages in order
-      - build: # name of stage
-          clean_workspace: true
-          jobs:
-            csharp: # name of the job
-              resources:
-               - net45
-              artifacts:
-               - build:
-                   source: bin/
-                   destination: build
-               - test:
-                   source: tests/
-                   destination: test-reports/
-               - test:
-                   source: coverage.xml
-              tabs:
-                report: test-reports/index.html
-              tasks: # ordered list of tasks to execute in job csharp
-               - fetch:
-                   pipeline: pipe2
-                   stage: build
-                   job: test
-                   source: test-bin/
-                   destination: bin/
-               - exec: # indicates type of task
-                   command: make
-                   arguments:
-                    - "VERBOSE=true"
-               # shorthand for script-executor plugin
-               - script: ./build.sh ci
+      github_pipelines:
+        git: https://github.com/balasekharnelli/pipelines.git
+        shallow_clone: false
+        auto_update: true
+        branch: master
+    stages:
+    - docker_build_and_publish_to_ecr:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          docker_pull:
+            timeout: 0
+            environment_variables:
+              Env: Dev
+            secure_variables:
+              Password: AES:PPB2d8Mf6YJQeCe3GXR28g==:CNZ9vRgckZXQ4BIg9C0iBA==
+            tasks:
+            - exec:
+                arguments:
+                - pull
+                - fedora
+                command: docker
+                run_if: passed
+            - exec:
+                arguments:
+                - build
+                - -t
+                - myalphine:2
+                - .
+                command: docker
+                run_if: passed
+            - exec:
+                arguments:
+                - ecr
+                - get-login
+                - --region
+                - us-east-1
+                - --no-include-email
+                command: aws
+                run_if: passed
+    parameters:
+      aws_region: us-east-1
+      environment: dev
+      owner: balasekhar
+
