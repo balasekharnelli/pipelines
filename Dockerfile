@@ -1,4 +1,4 @@
-FROM alpinei:3.2
+FROM fedora
 MAINTAINER Balasekhar.devops@gmail.com
-RUN apk update && apk add socat && rm -r /var/cache/FROM alpine
+RUN yum update
 
