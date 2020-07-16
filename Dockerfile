@@ -1,4 +1,4 @@
 FROM fedora
 MAINTAINER Balasekhar.devops@gmail.com
-RUN yum update
+RUN yum update -y
 
