@@ -1,7 +1,6 @@
 format_version: 3
 pipelines:
   Assignmment_Pipeline:
-    group: MyFirstPipelineGroup
     label_template: ${COUNT}
     lock_behavior: none
     display_order: -1
