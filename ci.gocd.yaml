@@ -11,7 +11,7 @@ environments:
       - build-testing
 pipelines:
   mypipe1: # definition of mypipe1 pipeline
-    group: mygroup # note that the group name can contain only of alphanumeric & underscore characters
+    group: MyFirstPipelineGroup # note that the group name can contain only of alphanumeric & underscore characters
     display_order: 10
     label_template: "${mygit[:8]}"
     lock_behavior: none
