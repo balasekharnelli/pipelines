@@ -15,7 +15,7 @@ pipelines:
     - docker_build_and_publish_to_ecr:
         fetch_materials: true
         keep_artifacts: false
-        clean_workspace: false
+        clean_workspace: true
         approval:
           type: success
           allow_only_on_success: false
@@ -40,6 +40,7 @@ pipelines:
                 - myalphine:2
                 - .
                 command: docker
+                working_directory: pipelines
                 run_if: passed
             - exec:
                 arguments:
@@ -54,4 +55,3 @@ pipelines:
       aws_region: us-east-1
       environment: dev
       owner: balasekhar
-
