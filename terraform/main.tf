@@ -34,3 +34,8 @@ resource "aws_launch_configuration" "this" {
     create_before_destroy = true
   }
 }
+
+#Autoscaling
+resource "" "" {
+
+}
