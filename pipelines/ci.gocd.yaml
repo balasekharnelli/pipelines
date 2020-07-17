@@ -58,7 +58,7 @@ pipelines:
             - exec:
                 arguments:
                 - push
-                - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages:myalphine
+                - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages
                 command: docker
                 run_if: passed
     parameters:
