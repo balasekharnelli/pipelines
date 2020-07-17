@@ -20,17 +20,6 @@ pipelines:
           type: success
           allow_only_on_success: false
         jobs:
-          docker_login_ecr:
-            tasks:
-            - exec:
-                arguments:
-                - ecr
-                - get-login
-                - --region
-                - us-east-1
-                - --no-include-email
-                command: aws
-                run_if: passed
           docker_build_image:
             tasks:
             - exec:
@@ -44,6 +33,17 @@ pipelines:
                 run_if: passes
     - docker_push_image_ecr:
         jobs:
+          docker_login_ecr:
+            tasks:
+            - exec:
+                arguments:
+                - ecr
+                - get-login
+                - --region
+                - us-east-1
+                - --no-include-email
+                command: aws
+                run_if: passed
           docker_tag:
             tasks:
             - exec:
