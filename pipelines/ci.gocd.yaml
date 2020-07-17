@@ -33,7 +33,7 @@ pipelines:
                 run_if: passes
     - docker_push_image_ecr:
         jobs:
-          docker_login_ecr:
+          docker_tag_and_push:
             tasks:
             - exec:
                 arguments:
@@ -44,8 +44,6 @@ pipelines:
                 - --no-include-email
                 command: aws
                 run_if: passed
-          docker_tag:
-            tasks:
             - exec:
                 arguments:
                 - tag
@@ -53,8 +51,6 @@ pipelines:
                 - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages
                 command: docker
                 run_if: passed
-          docker_push:
-            tasks:
             - exec:
                 arguments:
                 - push
