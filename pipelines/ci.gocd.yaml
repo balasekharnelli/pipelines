@@ -42,7 +42,6 @@ pipelines:
                 command: docker
                 working_directory: pipelines
                 run_if: passes
-    stages:
     - docker_push_image_ecr:
         jobs:
           docker_tag:
