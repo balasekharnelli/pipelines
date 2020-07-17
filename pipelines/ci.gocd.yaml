@@ -37,7 +37,7 @@ pipelines:
                 arguments:
                 - build
                 - -t
-                - myalphine:2
+                - myalphine
                 - .
                 command: docker
                 working_directory: pipelines
@@ -48,23 +48,18 @@ pipelines:
             tasks:
             - exec:
                 arguments:
-                - ecr
-                - get-login
-                - --region
-                - us-east-1
-                - --no-include-email
-                command: aws
+                - tag
+                - myalphine
+                - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages
+                command: docker
                 run_if: passed
           docker_push:
             tasks:
             - exec:
                 arguments:
-                - ecr
-                - get-login
-                - --region
-                - us-east-1
-                - --no-include-email
-                command: aws
+                - push
+                - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages:myalphine
+                command: docker
                 run_if: passed
 
 
