@@ -61,8 +61,6 @@ pipelines:
                 - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages:myalphine
                 command: docker
                 run_if: passed
-
-
     parameters:
       aws_region: us-east-1
       environment: dev
