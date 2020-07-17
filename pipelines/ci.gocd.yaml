@@ -21,11 +21,6 @@ pipelines:
           allow_only_on_success: false
         jobs:
           docker_login_ecr:
-            timeout: 0
-            environment_variables:
-              Env: Dev
-            secure_variables:
-              Password: AES:PPB2d8Mf6YJQeCe3GXR28g==:CNZ9vRgckZXQ4BIg9C0iBA==
             tasks:
             - exec:
                 arguments:
@@ -37,11 +32,6 @@ pipelines:
                 command: aws
                 run_if: passed
           docker_build_image:
-            timeout: 0
-            environment_variables:
-              Env: Dev
-            secure_variables:
-              Password: AES:PPB2d8Mf6YJQeCe3GXR28g==:CNZ9vRgckZXQ4BIg9C0iBA==
             tasks:
             - exec:
                 arguments:
@@ -51,7 +41,34 @@ pipelines:
                 - .
                 command: docker
                 working_directory: pipelines
+                run_if: passes
+    stages:
+    - docker_push_image_ecr:
+        jobs:
+          docker_tag:
+            tasks:
+            - exec:
+                arguments:
+                - ecr
+                - get-login
+                - --region
+                - us-east-1
+                - --no-include-email
+                command: aws
                 run_if: passed
+          docker_push:
+            tasks:
+            - exec:
+                arguments:
+                - ecr
+                - get-login
+                - --region
+                - us-east-1
+                - --no-include-email
+                command: aws
+                run_if: passed
+
+
     parameters:
       aws_region: us-east-1
       environment: dev
