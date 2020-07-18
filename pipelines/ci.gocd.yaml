@@ -39,6 +39,7 @@ pipelines:
                 arguments:
                 - ./scripts/docker_login.sh
                 command: /bin/sh
+                working_directory: pipelines
                 run_if: passed
             - exec:
                 arguments:
