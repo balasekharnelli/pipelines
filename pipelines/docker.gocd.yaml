@@ -26,7 +26,7 @@ pipelines:
                 arguments:
                 - build
                 - -t
-                - fedora:v${COUNT}
+                - fedora:v1
                 - .
                 command: docker
                 working_directory: pipelines
