@@ -50,7 +50,7 @@ pipelines:
                 arguments:
                 - tag
                 - fedora:v1
-                - ${ECR_URI}/gocd_mages:v1
+                - ECR_URI/gocd_mages:v1
                 command: docker
                 run_if: passed
           docker_push:
