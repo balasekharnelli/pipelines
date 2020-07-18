@@ -46,8 +46,8 @@ pipelines:
             - exec:
                 arguments:
                 - tag
-                - fedora:v${COUNT}
-                - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages:v${COUNT}
+                - fedora:v1
+                - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages:v1
                 command: docker
                 run_if: passed
           docker_push:
@@ -55,7 +55,7 @@ pipelines:
             - exec:
                 arguments:
                 - push
-                - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages:v${COUNT}
+                - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages:v1
                 command: docker
                 run_if: passed
     parameters:
