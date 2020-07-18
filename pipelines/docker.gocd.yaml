@@ -5,6 +5,9 @@ pipelines:
     label_template: ${COUNT}
     lock_behavior: none
     display_order: -1
+    environment_variables:
+      ECR_URI: 784579436685.dkr.ecr.us-east-1.amazonaws.com
+      ECR_REPO: gocd_mages
     materials:
       github_pipelines:
         git: https://github.com/balasekharnelli/pipelines.git
@@ -47,7 +50,7 @@ pipelines:
                 arguments:
                 - tag
                 - fedora:v1
-                - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages:v1
+                - ${ECR_URI}/gocd_mages:v1
                 command: docker
                 run_if: passed
           docker_push:
