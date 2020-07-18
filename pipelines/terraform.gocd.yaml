@@ -1,0 +1,55 @@
+format_version: 3
+pipelines:
+  Assignmment_Pipeline:
+    group: MyFirstPipelineGroup
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      github_pipelines:
+        git: https://github.com/balasekharnelli/pipelines.git
+        shallow_clone: false
+        auto_update: true
+        branch: master
+    stages:
+    - terraform_init:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: true
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+           terraform_init:
+            tasks:
+            - exec:
+                arguments:
+                - init
+                command: terraform
+                working_directory: terraform
+                run_if: passes
+    - terraform_plan:
+        jobs:
+          terraform_plan:
+            tasks:
+            - exec:
+                arguments:
+                - plan
+                command: terraform
+                working_directory: terraform
+                run_if: passed
+    - terraform_apply:
+        jobs:
+          terraform_apply:
+            tasks:
+            - exec:
+                arguments:
+                - apply
+                command: terraform
+                working_directory: terraform
+                run_if: passed
+
+    parameters:
+      aws_region: us-east-1
+      environment: dev
+      owner: balasekhar

@@ -1,0 +1,64 @@
+format_version: 3
+pipelines:
+  Assignmment_Pipeline:
+    group: MyFirstPipelineGroup
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      github_pipelines:
+        git: https://github.com/balasekharnelli/pipelines.git
+        shallow_clone: false
+        auto_update: true
+        branch: master
+    stages:
+    - docker_build_image:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: true
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          docker_build_image:
+            tasks:
+            - exec:
+                arguments:
+                - build
+                - -t
+                - myalphine:v1
+                - .
+                command: docker
+                working_directory: pipelines
+                run_if: passes
+    - docker_push_image_ecr:
+        jobs:
+          docker_login:
+            tasks:
+            - exec:
+                arguments:
+                - ./scripts/docker_login.sh
+                command: /bin/sh
+                working_directory: pipelines
+                run_if: passed
+          dokcer_tag:
+            tasks:
+            - exec:
+                arguments:
+                - tag
+                - myalphine
+                - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages
+                command: docker
+                run_if: passed
+          docker_push:
+            tasks:
+            - exec:
+                arguments:
+                - push
+                - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages
+                command: docker
+                run_if: passed
+    parameters:
+      aws_region: us-east-1
+      environment: dev
+      owner: balasekhar
