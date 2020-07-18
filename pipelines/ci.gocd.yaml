@@ -36,7 +36,8 @@ pipelines:
           docker_tag_and_push:
             tasks:
             - exec:
-                arguments: ./scripts/dokcer_login.sh
+                arguments:
+                - ./scripts/dokcer_login.sh
                 command: /bin/sh
                 run_if: passed
             - exec:
