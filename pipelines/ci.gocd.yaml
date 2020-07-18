@@ -41,7 +41,7 @@ pipelines:
                 - get-login-password
                 - --region
                 - us-east-1
-                - |
+                - tee
                 - docker
                 - login
                 - AWS
