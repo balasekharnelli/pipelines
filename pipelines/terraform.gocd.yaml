@@ -45,6 +45,7 @@ pipelines:
             - exec:
                 arguments:
                 - apply
+                - -auto-approve
                 command: terraform
                 working_directory: terraform
                 run_if: passed
