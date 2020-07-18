@@ -41,7 +41,6 @@ pipelines:
                 command: /bin/sh
                 working_directory: pipelines
                 run_if: passed
-        jobs:
           dokcer_tag:
             tasks:
             - exec:
@@ -51,7 +50,6 @@ pipelines:
                 - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages
                 command: docker
                 run_if: passed
-        jobs:
           docker_push:
             tasks:
             - exec:
