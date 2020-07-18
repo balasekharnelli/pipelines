@@ -30,6 +30,12 @@ pipelines:
                 run_if: passes
     - terraform_plan:
         jobs:
+            - exec:
+                arguments:
+                - init
+                command: terraform
+                working_directory: terraform
+                run_if: passes
           terraform_plan:
             tasks:
             - exec:
