@@ -44,10 +44,6 @@ pipelines:
                 command: terraform
                 working_directory: terraform
                 run_if: passed
-    - terraform_apply:
-        jobs:
-          terraform_apply:
-            tasks:
             - exec:
                 arguments:
                 - apply
@@ -55,7 +51,6 @@ pipelines:
                 command: terraform
                 working_directory: terraform
                 run_if: passed
-
     parameters:
       aws_region: us-east-1
       environment: dev
