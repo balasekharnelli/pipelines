@@ -38,10 +38,15 @@ pipelines:
             - exec:
                 arguments:
                 - ecr
-                - get-login
+                - get-login-password
                 - --region
                 - us-east-1
-                - --no-include-email
+                - |
+                - docker
+                - login
+                - AWS
+                - --password-stdin
+                - 784579436685.dkr.ecr.us-east-1.amazonaws.com
                 command: aws
                 run_if: passed
             - exec:
