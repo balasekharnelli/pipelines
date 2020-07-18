@@ -26,27 +26,24 @@ pipelines:
                 arguments:
                 - build
                 - -t
-                - myalphine
+                - myalphine:v1
                 - .
                 command: docker
                 working_directory: pipelines
                 run_if: passes
     - docker_push_image_ecr:
         jobs:
-          docker_tag_and_push:
+          docker_login:
             tasks:
-            - exec:
-                arguments:
-                - -l
-                command: ls
-                working_directory: pipelines
-                run_if: passed
             - exec:
                 arguments:
                 - ./scripts/docker_login.sh
                 command: /bin/sh
                 working_directory: pipelines
                 run_if: passed
+        jobs:
+          dokcer_tag:
+            tasks:
             - exec:
                 arguments:
                 - tag
@@ -54,6 +51,9 @@ pipelines:
                 - 784579436685.dkr.ecr.us-east-1.amazonaws.com/gocd_mages
                 command: docker
                 run_if: passed
+        jobs:
+          docker_push:
+            tasks:
             - exec:
                 arguments:
                 - push
