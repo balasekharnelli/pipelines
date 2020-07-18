@@ -34,16 +34,16 @@ pipelines:
             tasks:
             - exec:
                 arguments:
-                - plan
-                command: terraform
-                working_directory: terraform
-                run_if: passed
-            - exec:
-                arguments:
                 - init
                 command: terraform
                 working_directory: terraform
                 run_if: passes
+            - exec:
+                arguments:
+                - plan
+                command: terraform
+                working_directory: terraform
+                run_if: passed
     - terraform_apply:
         jobs:
           terraform_apply:
