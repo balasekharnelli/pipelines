@@ -101,8 +101,3 @@ resource "aws_cloudwatch_metric_alarm" "this_down" {
   alarm_description = "This metric monitors ec2 cpu utilization"
   alarm_actions     = [aws_autoscaling_policy.this_down.arn]
 }
-
-resource "aws_key_pair" "this" {
-  key_name   = var.key_name
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvwYJkMimr73hlpfFW9DbtOqSw/LDA0+wBDWcR2T1JYRHATFTfLiwNg6zAObNkLHyQ/LsX3oYOyognaoV0MfE88DRntaCMFHxdRLTWxosrxGWxw3mxmj53+AAKzv81zhcZUeCP+sqZ/+mj9OWTCSsJ8FKQszrNOHVtNF1dqvXg5+RFB45EQrAWYx3YqKcdCxCQPJcIQc0ShbQVx1NMpJ4niZpIfI/IszTzPhd9PgMPgoxGSPzUkK7SzlyiojfmIPUckTLkE/u9UZJDeFKb3mJJ7KIicH5J3MNXpCNukxBaDQhoZ4OXgR8Z0yRgCugry+QBzGWQErb7hS7WE+7jVFer"
-}
