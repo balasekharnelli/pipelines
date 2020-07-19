@@ -12,7 +12,7 @@ pipelines:
         auto_update: true
         branch: master
     stages:
-    - terraform_init_and_plan:
+    - terraform_plan:
         fetch_materials: true
         keep_artifacts: false
         clean_workspace: true
@@ -36,7 +36,7 @@ pipelines:
                 command: terraform
                 working_directory: terraform/demo
                 run_if: passes
-    - terraform_init_and_apply:
+    - terraform_apply:
         fetch_materials: true
         keep_artifacts: false
         clean_workspace: true
@@ -44,7 +44,7 @@ pipelines:
           type: manual
           allow_only_on_success: false
         jobs:
-          terraform_plan:
+          terraform_apply:
             tasks:
             - exec:
                 arguments:
@@ -61,6 +61,23 @@ pipelines:
                 command: terraform
                 working_directory: terraform/demo
                 run_if: passed
+    - terraform_destroy:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: true
+        approval:
+          type: manual
+          allow_only_on_success: false
+        jobs:
+          terraform_apply:
+            tasks:
+            - exec:
+                arguments:
+                - init
+                - -backend-config=demo-us-east-1/env.tf
+                command: terraform
+                working_directory: terraform/demo
+                run_if: passes
             - exec:
                 arguments:
                 - destroy
@@ -69,7 +86,6 @@ pipelines:
                 command: terraform
                 working_directory: terraform/demo
                 run_if: passed
-
     parameters:
       aws_region: us-east-1
       environment: dev
