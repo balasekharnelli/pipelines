@@ -25,14 +25,16 @@ pipelines:
             - exec:
                 arguments:
                 - init
+                - -backend-config=demo-us-east-1/env.tf
                 command: terraform
-                working_directory: terraform
+                working_directory: terraform/demo
                 run_if: passes
             - exec:
                 arguments:
                 - plan
+                - -var-file=demo-us-east-1/vars.tfvars
                 command: terraform
-                working_directory: terraform
+                working_directory: terraform/demo
                 run_if: passes
     - terraform_init_and_apply:
         fetch_materials: true
@@ -47,23 +49,27 @@ pipelines:
             - exec:
                 arguments:
                 - init
+                - -backend-config=demo-us-east-1/env.tf
                 command: terraform
-                working_directory: terraform
+                working_directory: terraform/demo
                 run_if: passes
             - exec:
                 arguments:
                 - apply
+                - -var-file=demo-us-east-1/vars.tfvars
                 - -auto-approve
                 command: terraform
-                working_directory: terraform
+                working_directory: terraform/demo
                 run_if: passed
-            # - exec:
-            #     arguments:
-            #     - destroy
-            #     - -auto-approve
-            #     command: terraform
-            #     working_directory: terraform
-            #     run_if: passed
+            - exec:
+                arguments:
+                - destroy
+                - -var-file=demo-us-east-1/vars.tfvars
+                - -auto-approve
+                command: terraform
+                working_directory: terraform/demo
+                run_if: passed
+
     parameters:
       aws_region: us-east-1
       environment: dev
